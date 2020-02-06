@@ -1,0 +1,43 @@
+from bs4 import BeautifulSoup
+
+html_doc = """
+<html><head><title>Hello World</title></head>
+<body><h2>Test Header</h2>
+<p>This is a test.</p>
+<a id="link1" href="/my_link1">Link 1</a>
+<a id="link2" href="/my_link2">Link 2</a>
+<p>Hello, <b class="boldtext">Bold Text</b></p>
+</body></html>
+"""
+
+# 以 Beautiful Soup 解析 HTML 程式碼
+soup = BeautifulSoup(html_doc, 'html.parser') 
+print(soup.prettify())  #將程式碼整理成樹狀圖
+
+#抓title 節點  
+title_tag = soup.title    
+print(title_tag)        
+print(title_tag.string)   # 取得節點的文字內容
+
+a_tags = soup.find_all('a')   #取得所有參數設定的HTML標籤節點
+print(a_tags)               #所有的搜尋到的HTML節點
+print(a_tags[0])            #其中第N個HTML節點
+print(a_tags[1].string)     #取出節點中的String
+print("---\n")
+
+for tag in a_tags:
+  # 輸出全部超連結的文字
+  print(tag.string)
+  print("---\n")
+  
+#取的HTML節點的屬性
+for tag in a_tags:   
+  # 輸出超連結網址()
+  print(tag.get('href'))
+ 
+#若要同時搜尋多種標籤  可用list來列出需要的標籤名稱 ， 若檔案過多，可用limit來限制節點上限值 
+# EX:  tags = soup.find_all(["a", "b"],limit=1)
+
+#正常搜尋下，find_all會以遞迴方式尋找所有的節點，可設定recursive來關閉遞迴搜尋功能。  EX: 
+a=soup.html.find_all("title",recursive=False)  #可以去除.html  結果為相同
+print(a)
